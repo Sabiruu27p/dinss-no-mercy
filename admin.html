@@ -4,71 +4,78 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="robots" content="noindex,nofollow">
 <title>Admin | DINSS NO MERCY</title>
 <style>
 *{box-sizing:border-box}
-body{margin:0;padding:20px;background:#090b12;color:#f5f6fa;font-family:Arial,sans-serif}
-.panel{width:min(100%,850px);margin:20px auto;padding:24px;border:1px solid #292d3a;border-radius:16px;background:#121622}
-h1,h2{margin-top:10px}
-.tag{color:#9caeff;font-size:12px;letter-spacing:2px;font-weight:bold}
-p{color:#aeb5c5;line-height:1.5}
-label{display:block;margin:14px 0 7px}
-input,textarea{width:100%;padding:12px;border:1px solid #363d4e;border-radius:9px;background:#090d17;color:white;font:inherit}
-textarea{min-height:75px;resize:vertical}
-button{padding:12px 16px;margin:10px 6px 0 0;border:0;border-radius:9px;background:#a9ff36;color:#11170a;font-weight:bold;cursor:pointer}
-.secondary{background:#252c3b;color:white}
-.danger{background:#a83245;color:white}
+body{margin:0;padding:18px;background:#080b13;color:#fff;font-family:Arial,sans-serif}
+.panel{max-width:900px;margin:20px auto;padding:22px;background:#111827;border:1px solid #26344d;border-radius:16px}
+.tag{color:#48a5ff;font-size:12px;letter-spacing:2px;font-weight:bold}
+h1,h2{margin-top:12px}
+label{display:block;margin:13px 0 6px;color:#cbd5e1}
+input,textarea{width:100%;padding:12px;background:#080d18;color:white;border:1px solid #34445e;border-radius:8px;font:inherit}
+textarea{min-height:65px}
+button{padding:11px 15px;margin:9px 5px 0 0;border:0;border-radius:8px;background:#258cff;color:white;font-weight:bold}
+.secondary{background:#29364b}
+.danger{background:#b83245}
 #dashboard{display:none}
-#status{min-height:24px;color:#a9ff36}
-.service{padding:15px;margin-top:12px;border:1px solid #363d4e;border-radius:10px;background:#090d17}
-.service p{margin:6px 0}
-a{color:#a9ff36}
+#status{color:#60aaff;min-height:25px}
+.item{display:flex;align-items:center;gap:13px;padding:13px;margin-top:10px;background:#080d18;border:1px solid #293b56;border-radius:10px}
+.item img{width:58px;height:58px;object-fit:contain;border-radius:9px;background:#182337}
+.item-info{flex:1;min-width:0}
+.item-info p{margin:5px 0;color:#aebbd0;overflow-wrap:anywhere}
+hr{border:0;border-top:1px solid #29364b;margin:25px 0}
+a{color:#58aaff}
 </style>
 </head>
 <body>
 <main class="panel">
 <div class="tag">DINSS NO MERCY · CONTROL PANEL</div>
-<h1>Admin Website</h1>
-<p>Kelola pengaturan website dan daftar layanan.</p>
+<h1>Admin Dashboard</h1>
+<p>Kelola website DINSS NO MERCY.</p>
 
 <section id="login">
 <label>Email admin</label>
-<input id="email" type="email" autocomplete="username" placeholder="Email admin">
+<input id="email" type="email" placeholder="Email admin">
 <label>Password</label>
-<input id="password" type="password" autocomplete="current-password" placeholder="Password admin">
+<input id="password" type="password" placeholder="Password admin">
 <button id="loginBtn">Masuk</button>
 </section>
 
-<section id="dashboard">
+<section id="dashboard" style="display:none">
+
 <h2>Pengaturan WhatsApp</h2>
-<label>Nomor WhatsApp (format 62)</label>
-<input id="waNumber" type="tel" placeholder="628xxxxxxxxxx">
-<button id="saveBtn">Simpan nomor WhatsApp</button>
+<label>Nomor WhatsApp format 62</label>
+<input id="waNumber" placeholder="628xxxxxxxxxx">
+<button id="saveBtn">Simpan WhatsApp</button>
 
-<hr style="border-color:#292d3a;margin:25px 0">
-
+<hr>
 <h2>Kelola Layanan</h2>
 <input type="hidden" id="serviceId">
-
 <label>Nama layanan</label>
-<input id="serviceName" placeholder="Contoh: Jasa Push Rank">
-
+<input id="serviceName" placeholder="Nama layanan">
 <label>Deskripsi</label>
 <textarea id="serviceDescription" placeholder="Deskripsi layanan"></textarea>
-
-<label>Harga (angka saja)</label>
+<label>Harga</label>
 <input id="servicePrice" type="number" min="0" placeholder="50000">
-
 <label>Kategori</label>
-<input id="serviceCategory" placeholder="Contoh: Mobile Legends">
-
+<input id="serviceCategory" placeholder="Kategori game">
 <button id="serviceSaveBtn">Tambah layanan</button>
-<button id="cancelEditBtn" class="secondary" style="display:none">Batal edit</button>
-
-<h2>Daftar Layanan</h2>
+<button id="serviceCancel" class="secondary" style="display:none">Batal edit</button>
 <div id="serviceList">Memuat layanan...</div>
 
+<hr>
+<h2>Kelola Game dan Logo</h2>
+<input type="hidden" id="gameId">
+<label>Nama game</label>
+<input id="gameName" placeholder="Contoh: Mobile Legends">
+<label>URL logo game</label>
+<input id="gameLogo" placeholder="https://alamat-gambar-logo.png">
+<p style="color:#aebbd0;font-size:13px">Masukkan alamat gambar logo yang bisa dibuka secara publik.</p>
+<button id="gameSaveBtn">Tambah game</button>
+<button id="gameCancel" class="secondary" style="display:none">Batal edit</button>
+<div id="gameList">Memuat game...</div>
+
+<hr>
 <button id="logoutBtn" class="secondary">Keluar</button>
 </section>
 
@@ -82,7 +89,7 @@ const SUPABASE_URL="https://qysosxigmhowkixfgnbl.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY="sb_publishable_07uDY6VmHmZCz7qY928caw_PN68h_4c";
 const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
 const $=id=>document.getElementById(id);
-const status=message=>{$("status").textContent=message};
+const status=m=>$("status").textContent=m;
 
 async function showSession(){
  const {data:{session}}=await db.auth.getSession();
@@ -90,15 +97,15 @@ async function showSession(){
  $("dashboard").style.display=session?"block":"none";
  if(session){
   const {data,error}=await db.from("site_settings").select("whatsapp_number").eq("id",1).single();
-  if(error)status("Gagal membaca pengaturan: "+error.message);
+  if(error)status("Gagal membaca WhatsApp: "+error.message);
   else $("waNumber").value=data?.whatsapp_number||"";
   await loadServices();
+  await loadGames();
  }
 }
 
 $("loginBtn").onclick=async()=>{
- const email=$("email").value.trim();
- const password=$("password").value;
+ const email=$("email").value.trim(),password=$("password").value;
  if(!email||!password)return status("Isi email dan password.");
  $("loginBtn").disabled=true;
  const {error}=await db.auth.signInWithPassword({email,password});
@@ -110,119 +117,107 @@ $("loginBtn").onclick=async()=>{
 
 $("saveBtn").onclick=async()=>{
  const number=$("waNumber").value.replace(/\D/g,"");
- if(!/^62\d{8,15}$/.test(number))return status("Nomor harus menggunakan format 62xxxxxxxxxx.");
- $("saveBtn").disabled=true;
+ if(!/^62\d{8,15}$/.test(number))return status("Format nomor harus 62xxxxxxxxxx.");
  const {error}=await db.from("site_settings")
- .update({whatsapp_number:number,updated_at:new Date().toISOString()})
- .eq("id",1);
- $("saveBtn").disabled=false;
+ .update({whatsapp_number:number,updated_at:new Date().toISOString()}).eq("id",1);
  if(error)return status("Gagal menyimpan WhatsApp: "+error.message);
  status("Nomor WhatsApp berhasil disimpan.");
 };
 
-function resetServiceForm(){
- $("serviceId").value="";
- $("serviceName").value="";
- $("serviceDescription").value="";
- $("servicePrice").value="";
- $("serviceCategory").value="";
+/* LAYANAN */
+function resetService(){
+ ["serviceId","serviceName","serviceDescription","servicePrice","serviceCategory"].forEach(id=>$(id).value="");
  $("serviceSaveBtn").textContent="Tambah layanan";
- $("cancelEditBtn").style.display="none";
+ $("serviceCancel").style.display="none";
 }
 
 async function loadServices(){
- const list=$("serviceList");
- list.textContent="Memuat layanan...";
+ const box=$("serviceList");
+ box.textContent="Memuat layanan...";
  const {data,error}=await db.from("services").select("*").order("id",{ascending:false});
- if(error){
-  list.textContent="Gagal memuat layanan: "+error.message;
-  return;
- }
- list.replaceChildren();
- if(!data||data.length===0){
-  list.textContent="Belum ada layanan.";
-  return;
- }
- data.forEach(item=>{
-  const card=document.createElement("div");
-  card.className="service";
-  const name=document.createElement("strong");
-  name.textContent=item.name;
-  const description=document.createElement("p");
-  description.textContent=item.description||"Tanpa deskripsi";
-  const details=document.createElement("p");
-  details.textContent="Kategori: "+(item.category||"-")+" | Harga: Rp "+Number(item.price||0).toLocaleString("id-ID");
-  const edit=document.createElement("button");
-  edit.className="secondary";
-  edit.textContent="Edit";
-  edit.onclick=()=>editService(item);
-  const del=document.createElement("button");
-  del.className="danger";
-  del.textContent="Hapus";
-  del.onclick=()=>deleteService(item.id);
-  card.append(name,description,details,edit,del);
-  list.append(card);
+ if(error){box.textContent="Gagal memuat layanan: "+error.message;return;}
+ box.replaceChildren();
+ if(!data.length){box.textContent="Belum ada layanan.";return;}
+ data.forEach(x=>{
+  const card=document.createElement("div");card.className="item";
+  const info=document.createElement("div");info.className="item-info";
+  const name=document.createElement("strong");name.textContent=x.name;
+  const desc=document.createElement("p");desc.textContent=x.description||"-";
+  const price=document.createElement("p");price.textContent="Rp "+Number(x.price||0).toLocaleString("id-ID")+" | "+(x.category||"-");
+  info.append(name,desc,price);
+  const edit=document.createElement("button");edit.textContent="Edit";edit.className="secondary";
+  edit.onclick=()=>{ $("serviceId").value=x.id;$("serviceName").value=x.name;$("serviceDescription").value=x.description||"";$("servicePrice").value=x.price||0;$("serviceCategory").value=x.category||"";$("serviceSaveBtn").textContent="Simpan perubahan";$("serviceCancel").style.display="inline-block";window.scrollTo(0,0);};
+  const del=document.createElement("button");del.textContent="Hapus";del.className="danger";
+  del.onclick=async()=>{if(!confirm("Hapus layanan ini?"))return;const {error}=await db.from("services").delete().eq("id",x.id);if(error)return status(error.message);status("Layanan dihapus.");loadServices();};
+  card.append(info,edit,del);box.append(card);
  });
-}
-
-function editService(item){
- $("serviceId").value=item.id;
- $("serviceName").value=item.name||"";
- $("serviceDescription").value=item.description||"";
- $("servicePrice").value=item.price||0;
- $("serviceCategory").value=item.category||"";
- $("serviceSaveBtn").textContent="Simpan perubahan";
- $("cancelEditBtn").style.display="inline-block";
- status("Mode edit layanan.");
- window.scrollTo({top:0,behavior:"smooth"});
 }
 
 $("serviceSaveBtn").onclick=async()=>{
  const id=$("serviceId").value;
  const name=$("serviceName").value.trim();
- const description=$("serviceDescription").value.trim();
  const price=Number($("servicePrice").value||0);
- const category=$("serviceCategory").value.trim();
-
  if(!name)return status("Nama layanan wajib diisi.");
  if(!Number.isFinite(price)||price<0)return status("Harga tidak valid.");
-
- const payload={name,description,price,category};
- $("serviceSaveBtn").disabled=true;
- let result;
- if(id){
-  result=await db.from("services").update(payload).eq("id",id);
- }else{
-  result=await db.from("services").insert(payload);
- }
- $("serviceSaveBtn").disabled=false;
-
+ const payload={name,description:$("serviceDescription").value.trim(),price,category:$("serviceCategory").value.trim()};
+ const result=id?await db.from("services").update(payload).eq("id",id):await db.from("services").insert(payload);
  if(result.error)return status("Gagal menyimpan layanan: "+result.error.message);
- resetServiceForm();
- status("Layanan berhasil disimpan.");
- await loadServices();
+ resetService();status("Layanan berhasil disimpan.");await loadServices();
 };
+$("serviceCancel").onclick=resetService;
 
-async function deleteService(id){
- if(!confirm("Yakin ingin menghapus layanan ini?"))return;
- const {error}=await db.from("services").delete().eq("id",id);
- if(error)return status("Gagal menghapus: "+error.message);
- status("Layanan berhasil dihapus.");
- await loadServices();
+/* GAME DAN LOGO */
+function resetGame(){
+ $("gameId").value="";$("gameName").value="";$("gameLogo").value="";
+ $("gameSaveBtn").textContent="Tambah game";
+ $("gameCancel").style.display="none";
 }
 
-$("cancelEditBtn").onclick=resetServiceForm;
+async function loadGames(){
+ const box=$("gameList");box.textContent="Memuat game...";
+ const {data,error}=await db.from("games").select("*").order("id",{ascending:false});
+ if(error){box.textContent="Gagal memuat game: "+error.message;return;}
+ box.replaceChildren();
+ if(!data.length){box.textContent="Belum ada game.";return;}
+ data.forEach(x=>{
+  const card=document.createElement("div");card.className="item";
+  if(x.logo_url){
+   const img=document.createElement("img");img.src=x.logo_url;img.alt="Logo "+x.name;
+   img.onerror=()=>{img.style.display="none";};
+   card.append(img);
+  }
+  const info=document.createElement("div");info.className="item-info";
+  const name=document.createElement("strong");name.textContent=x.name;
+  const url=document.createElement("p");url.textContent=x.logo_url||"Belum ada logo";
+  info.append(name,url);
+  const edit=document.createElement("button");edit.className="secondary";edit.textContent="Edit";
+  edit.onclick=()=>{$("gameId").value=x.id;$("gameName").value=x.name;$("gameLogo").value=x.logo_url||"";$("gameSaveBtn").textContent="Simpan perubahan";$("gameCancel").style.display="inline-block";window.scrollTo(0,0);};
+  const del=document.createElement("button");del.className="danger";del.textContent="Hapus";
+  del.onclick=async()=>{if(!confirm("Hapus game ini?"))return;const {error}=await db.from("games").delete().eq("id",x.id);if(error)return status("Gagal menghapus: "+error.message);status("Game dihapus.");loadGames();};
+  card.append(info,edit,del);box.append(card);
+ });
+}
+
+$("gameSaveBtn").onclick=async()=>{
+ const id=$("gameId").value;
+ const name=$("gameName").value.trim();
+ const logo=$("gameLogo").value.trim();
+ if(!name)return status("Nama game wajib diisi.");
+ if(logo&&!/^https:\/\/\S+$/i.test(logo))return status("URL logo harus diawali https://");
+ const payload={name,logo_url:logo||null};
+ const result=id?await db.from("games").update(payload).eq("id",id):await db.from("games").insert(payload);
+ if(result.error)return status("Gagal menyimpan game: "+result.error.message);
+ resetGame();status("Game berhasil disimpan.");await loadGames();
+};
+$("gameCancel").onclick=resetGame;
 
 $("logoutBtn").onclick=async()=>{
- await db.auth.signOut();
- resetServiceForm();
- $("waNumber").value="";
- status("Kamu sudah keluar.");
- await showSession();
+ await db.auth.signOut();resetService();resetGame();$("waNumber").value="";
+ status("Kamu sudah keluar.");await showSession();
 };
 
 showSession();
 </script>
 </body>
-  </html>
-  
+                                                                                                    </html>
+ 
