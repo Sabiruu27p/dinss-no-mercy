@@ -1,85 +1,228 @@
+
 <!doctype html>
 <html lang="id">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="robots" content="noindex,nofollow">
-  <title>Admin | DINSS NO MERCY</title>
-  <style>
-    *{box-sizing:border-box}body{margin:0;min-height:100vh;padding:24px;background:#090b12;color:#f5f6fa;font-family:Inter,system-ui,Arial,sans-serif;display:grid;place-items:center}.panel{width:min(100%,460px);padding:28px;border:1px solid #292d3a;border-radius:18px;background:#121622;box-shadow:0 20px 60px #0008}h1{margin:0 0 8px;font-size:25px}p{color:#aeb5c5;line-height:1.6}.tag{color:#9caeff;font-size:12px;letter-spacing:2px;font-weight:800}label{display:block;margin:18px 0 7px;font-size:14px;color:#dce1ec}input{width:100%;padding:13px 14px;border:1px solid #363d4e;border-radius:10px;background:#090d17;color:white;font:inherit}button{width:100%;margin-top:18px;padding:13px;border:0;border-radius:10px;background:#a9ff36;color:#11170a;font-weight:800;font-size:15px}button.secondary{background:#252c3b;color:#fff}button:disabled{opacity:.5}#dashboard{display:none}#status{min-height:24px;font-size:14px;color:#c5d0e5}.back{display:inline-block;margin-top:20px;color:#a9ff36;text-decoration:none}
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Admin | DINSS NO MERCY</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;padding:20px;background:#090b12;color:#f5f6fa;font-family:Arial,sans-serif}
+.panel{width:min(100%,850px);margin:20px auto;padding:24px;border:1px solid #292d3a;border-radius:16px;background:#121622}
+h1,h2{margin-top:10px}
+.tag{color:#9caeff;font-size:12px;letter-spacing:2px;font-weight:bold}
+p{color:#aeb5c5;line-height:1.5}
+label{display:block;margin:14px 0 7px}
+input,textarea{width:100%;padding:12px;border:1px solid #363d4e;border-radius:9px;background:#090d17;color:white;font:inherit}
+textarea{min-height:75px;resize:vertical}
+button{padding:12px 16px;margin:10px 6px 0 0;border:0;border-radius:9px;background:#a9ff36;color:#11170a;font-weight:bold;cursor:pointer}
+.secondary{background:#252c3b;color:white}
+.danger{background:#a83245;color:white}
+#dashboard{display:none}
+#status{min-height:24px;color:#a9ff36}
+.service{padding:15px;margin-top:12px;border:1px solid #363d4e;border-radius:10px;background:#090d17}
+.service p{margin:6px 0}
+a{color:#a9ff36}
+</style>
 </head>
 <body>
-  <main class="panel">
-    <div class="tag">DINSS NO MERCY · CONTROL PANEL</div>
-    <h1>Admin Website</h1>
-    <p>Masuk menggunakan akun yang dibuat di Supabase Authentication. Hanya akun admin yang diizinkan oleh policy database yang dapat menyimpan perubahan.</p>
-    <section id="login">
-      <label for="email">Email admin</label>
-      <input id="email" type="email" autocomplete="username" placeholder="Email akun admin">
-      <label for="password">Password</label>
-      <input id="password" type="password" autocomplete="current-password" placeholder="Password akun admin">
-      <button id="loginBtn">Masuk</button>
-    </section>
-    <section id="dashboard">
-      <label for="waNumber">Nomor WhatsApp (format 62, tanpa + atau spasi)</label>
-      <input id="waNumber" type="tel" inputmode="numeric" placeholder="628xxxxxxxxxx">
-      <button id="saveBtn">Simpan nomor WhatsApp</button>
-      <button id="logoutBtn" class="secondary">Keluar</button>
-    </section>
-    <p id="status" role="status" aria-live="polite"></p>
-    <a class="back" href="index.html">← Kembali ke website</a>
-  </main>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script>
-    const SUPABASE_URL = "https://qysosxigmhowkixfgnbl.supabase.co";
-    const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_07uDY6VmHmZCz7qY928caw_PN68h_4c";
-    const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
-    const $ = (id) => document.getElementById(id);
-    const status = (message) => { $('status').textContent = message; };
+<main class="panel">
+<div class="tag">DINSS NO MERCY · CONTROL PANEL</div>
+<h1>Admin Website</h1>
+<p>Kelola pengaturan website dan daftar layanan.</p>
 
-    async function showSession() {
-      const { data: { session } } = await db.auth.getSession();
-      $('login').style.display = session ? 'none' : 'block';
-      $('dashboard').style.display = session ? 'block' : 'none';
-      if (session) {
-        const { data, error } = await db.from('site_settings').select('whatsapp_number').eq('id', 1).single();
-        if (error) status('Login berhasil, tetapi data belum bisa dibaca: ' + error.message);
-        else $('waNumber').value = data?.whatsapp_number || '';
-      }
-    }
+<section id="login">
+<label>Email admin</label>
+<input id="email" type="email" autocomplete="username" placeholder="Email admin">
+<label>Password</label>
+<input id="password" type="password" autocomplete="current-password" placeholder="Password admin">
+<button id="loginBtn">Masuk</button>
+</section>
 
-    $('loginBtn').addEventListener('click', async () => {
-      const email = $('email').value.trim();
-      const password = $('password').value;
-      if (!email || !password) return status('Isi email dan password terlebih dahulu.');
-      $('loginBtn').disabled = true;
-      const { error } = await db.auth.signInWithPassword({ email, password });
-      $('loginBtn').disabled = false;
-      if (error) return status('Login gagal: ' + error.message);
-      status('Login berhasil.');
-      await showSession();
-    });
+<section id="dashboard">
+<h2>Pengaturan WhatsApp</h2>
+<label>Nomor WhatsApp (format 62)</label>
+<input id="waNumber" type="tel" placeholder="628xxxxxxxxxx">
+<button id="saveBtn">Simpan nomor WhatsApp</button>
 
-    $('saveBtn').addEventListener('click', async () => {
-      const number = $('waNumber').value.replace(/\D/g, '');
-      if (!/^62\d{8,15}$/.test(number)) return status('Nomor tidak valid. Gunakan format 62xxxxxxxxxx.');
-      $('saveBtn').disabled = true;
-      const { error } = await db.from('site_settings')
-        .update({ whatsapp_number: number, updated_at: new Date().toISOString() })
-        .eq('id', 1);
-      $('saveBtn').disabled = false;
-      if (error) return status('Gagal menyimpan: ' + error.message + '. Periksa policy UPDATE dan UID admin.');
-      status('Berhasil! Nomor WhatsApp website sudah diperbarui.');
-    });
+<hr style="border-color:#292d3a;margin:25px 0">
 
-    $('logoutBtn').addEventListener('click', async () => {
-      await db.auth.signOut();
-      $('waNumber').value = '';
-      status('Kamu sudah keluar.');
-      await showSession();
-    });
-    showSession();
-  </script>
+<h2>Kelola Layanan</h2>
+<input type="hidden" id="serviceId">
+
+<label>Nama layanan</label>
+<input id="serviceName" placeholder="Contoh: Jasa Push Rank">
+
+<label>Deskripsi</label>
+<textarea id="serviceDescription" placeholder="Deskripsi layanan"></textarea>
+
+<label>Harga (angka saja)</label>
+<input id="servicePrice" type="number" min="0" placeholder="50000">
+
+<label>Kategori</label>
+<input id="serviceCategory" placeholder="Contoh: Mobile Legends">
+
+<button id="serviceSaveBtn">Tambah layanan</button>
+<button id="cancelEditBtn" class="secondary" style="display:none">Batal edit</button>
+
+<h2>Daftar Layanan</h2>
+<div id="serviceList">Memuat layanan...</div>
+
+<button id="logoutBtn" class="secondary">Keluar</button>
+</section>
+
+<p id="status" role="status" aria-live="polite"></p>
+<a href="index.html">← Kembali ke website</a>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL="https://qysosxigmhowkixfgnbl.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY="sb_publishable_07uDY6VmHmZCz7qY928caw_PN68h_4c";
+const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
+const $=id=>document.getElementById(id);
+const status=message=>{$("status").textContent=message};
+
+async function showSession(){
+ const {data:{session}}=await db.auth.getSession();
+ $("login").style.display=session?"none":"block";
+ $("dashboard").style.display=session?"block":"none";
+ if(session){
+  const {data,error}=await db.from("site_settings").select("whatsapp_number").eq("id",1).single();
+  if(error)status("Gagal membaca pengaturan: "+error.message);
+  else $("waNumber").value=data?.whatsapp_number||"";
+  await loadServices();
+ }
+}
+
+$("loginBtn").onclick=async()=>{
+ const email=$("email").value.trim();
+ const password=$("password").value;
+ if(!email||!password)return status("Isi email dan password.");
+ $("loginBtn").disabled=true;
+ const {error}=await db.auth.signInWithPassword({email,password});
+ $("loginBtn").disabled=false;
+ if(error)return status("Login gagal: "+error.message);
+ status("Login berhasil.");
+ await showSession();
+};
+
+$("saveBtn").onclick=async()=>{
+ const number=$("waNumber").value.replace(/\D/g,"");
+ if(!/^62\d{8,15}$/.test(number))return status("Nomor harus menggunakan format 62xxxxxxxxxx.");
+ $("saveBtn").disabled=true;
+ const {error}=await db.from("site_settings")
+ .update({whatsapp_number:number,updated_at:new Date().toISOString()})
+ .eq("id",1);
+ $("saveBtn").disabled=false;
+ if(error)return status("Gagal menyimpan WhatsApp: "+error.message);
+ status("Nomor WhatsApp berhasil disimpan.");
+};
+
+function resetServiceForm(){
+ $("serviceId").value="";
+ $("serviceName").value="";
+ $("serviceDescription").value="";
+ $("servicePrice").value="";
+ $("serviceCategory").value="";
+ $("serviceSaveBtn").textContent="Tambah layanan";
+ $("cancelEditBtn").style.display="none";
+}
+
+async function loadServices(){
+ const list=$("serviceList");
+ list.textContent="Memuat layanan...";
+ const {data,error}=await db.from("services").select("*").order("id",{ascending:false});
+ if(error){
+  list.textContent="Gagal memuat layanan: "+error.message;
+  return;
+ }
+ list.replaceChildren();
+ if(!data||data.length===0){
+  list.textContent="Belum ada layanan.";
+  return;
+ }
+ data.forEach(item=>{
+  const card=document.createElement("div");
+  card.className="service";
+  const name=document.createElement("strong");
+  name.textContent=item.name;
+  const description=document.createElement("p");
+  description.textContent=item.description||"Tanpa deskripsi";
+  const details=document.createElement("p");
+  details.textContent="Kategori: "+(item.category||"-")+" | Harga: Rp "+Number(item.price||0).toLocaleString("id-ID");
+  const edit=document.createElement("button");
+  edit.className="secondary";
+  edit.textContent="Edit";
+  edit.onclick=()=>editService(item);
+  const del=document.createElement("button");
+  del.className="danger";
+  del.textContent="Hapus";
+  del.onclick=()=>deleteService(item.id);
+  card.append(name,description,details,edit,del);
+  list.append(card);
+ });
+}
+
+function editService(item){
+ $("serviceId").value=item.id;
+ $("serviceName").value=item.name||"";
+ $("serviceDescription").value=item.description||"";
+ $("servicePrice").value=item.price||0;
+ $("serviceCategory").value=item.category||"";
+ $("serviceSaveBtn").textContent="Simpan perubahan";
+ $("cancelEditBtn").style.display="inline-block";
+ status("Mode edit layanan.");
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+
+$("serviceSaveBtn").onclick=async()=>{
+ const id=$("serviceId").value;
+ const name=$("serviceName").value.trim();
+ const description=$("serviceDescription").value.trim();
+ const price=Number($("servicePrice").value||0);
+ const category=$("serviceCategory").value.trim();
+
+ if(!name)return status("Nama layanan wajib diisi.");
+ if(!Number.isFinite(price)||price<0)return status("Harga tidak valid.");
+
+ const payload={name,description,price,category};
+ $("serviceSaveBtn").disabled=true;
+ let result;
+ if(id){
+  result=await db.from("services").update(payload).eq("id",id);
+ }else{
+  result=await db.from("services").insert(payload);
+ }
+ $("serviceSaveBtn").disabled=false;
+
+ if(result.error)return status("Gagal menyimpan layanan: "+result.error.message);
+ resetServiceForm();
+ status("Layanan berhasil disimpan.");
+ await loadServices();
+};
+
+async function deleteService(id){
+ if(!confirm("Yakin ingin menghapus layanan ini?"))return;
+ const {error}=await db.from("services").delete().eq("id",id);
+ if(error)return status("Gagal menghapus: "+error.message);
+ status("Layanan berhasil dihapus.");
+ await loadServices();
+}
+
+$("cancelEditBtn").onclick=resetServiceForm;
+
+$("logoutBtn").onclick=async()=>{
+ await db.auth.signOut();
+ resetServiceForm();
+ $("waNumber").value="";
+ status("Kamu sudah keluar.");
+ await showSession();
+};
+
+showSession();
+</script>
 </body>
-</html>
+  </html>
+  
