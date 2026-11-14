@@ -60,3 +60,8 @@
 footer .footer-brand {
   display: none !important;
 }
+.hero-art,
+.about-logo,
+.footer-brand {
+  display: none !important;
+}
