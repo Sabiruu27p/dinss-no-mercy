@@ -55,3 +55,8 @@
 .footer-brand {
   display: none !important;
 }
+.hero-art,
+.about-logo,
+footer .footer-brand {
+  display: none !important;
+}
