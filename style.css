@@ -20,3 +20,6 @@
     grid-template-columns: 1fr !important;
   }
 }
+.footer-brand {
+  display: none !important;
+}
