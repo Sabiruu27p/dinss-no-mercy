@@ -49,3 +49,9 @@
     grid-template-columns: 1fr !important;
   }
 }
+/* FIX LOGO DINSS NO MERCY */
+.hero-art,
+.about-logo,
+.footer-brand {
+  display: none !important;
+}
