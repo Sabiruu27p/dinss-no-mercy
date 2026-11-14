@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Admin | DINSS NO MERCY</title>
+  <style>
+    *{box-sizing:border-box}body{margin:0;min-height:100vh;padding:24px;background:#090b12;color:#f5f6fa;font-family:Inter,system-ui,Arial,sans-serif;display:grid;place-items:center}.panel{width:min(100%,460px);padding:28px;border:1px solid #292d3a;border-radius:18px;background:#121622;box-shadow:0 20px 60px #0008}h1{margin:0 0 8px;font-size:25px}p{color:#aeb5c5;line-height:1.6}.tag{color:#9caeff;font-size:12px;letter-spacing:2px;font-weight:800}label{display:block;margin:18px 0 7px;font-size:14px;color:#dce1ec}input{width:100%;padding:13px 14px;border:1px solid #363d4e;border-radius:10px;background:#090d17;color:white;font:inherit}button{width:100%;margin-top:18px;padding:13px;border:0;border-radius:10px;background:#a9ff36;color:#11170a;font-weight:800;font-size:15px}button.secondary{background:#252c3b;color:#fff}button:disabled{opacity:.5}#dashboard{display:none}#status{min-height:24px;font-size:14px;color:#c5d0e5}.back{display:inline-block;margin-top:20px;color:#a9ff36;text-decoration:none}
+  </style>
+</head>
+<body>
+  <main class="panel">
+    <div class="tag">DINSS NO MERCY · CONTROL PANEL</div>
+    <h1>Admin Website</h1>
+    <p>Masuk menggunakan akun yang dibuat di Supabase Authentication. Hanya akun admin yang diizinkan oleh policy database yang dapat menyimpan perubahan.</p>
+    <section id="login">
+      <label for="email">Email admin</label>
+      <input id="email" type="email" autocomplete="username" placeholder="Email akun admin">
+      <label for="password">Password</label>
+      <input id="password" type="password" autocomplete="current-password" placeholder="Password akun admin">
+      <button id="loginBtn">Masuk</button>
+    </section>
+    <section id="dashboard">
+      <label for="waNumber">Nomor WhatsApp (format 62, tanpa + atau spasi)</label>
+      <input id="waNumber" type="tel" inputmode="numeric" placeholder="628xxxxxxxxxx">
+      <button id="saveBtn">Simpan nomor WhatsApp</button>
+      <button id="logoutBtn" class="secondary">Keluar</button>
+    </section>
+    <p id="status" role="status" aria-live="polite"></p>
+    <a class="back" href="index.html">← Kembali ke website</a>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const SUPABASE_URL = "https://qysosxigmhowkixfgnbl.supabase.co";
+    const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_07uDY6VmHmZCz7qY928caw_PN68h_4c";
+    const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+    const $ = (id) => document.getElementById(id);
+    const status = (message) => { $('status').textContent = message; };
+
+    async function showSession() {
+      const { data: { session } } = await db.auth.getSession();
+      $('login').style.display = session ? 'none' : 'block';
+      $('dashboard').style.display = session ? 'block' : 'none';
+      if (session) {
+        const { data, error } = await db.from('site_settings').select('whatsapp_number').eq('id', 1).single();
+        if (error) status('Login berhasil, tetapi data belum bisa dibaca: ' + error.message);
+        else $('waNumber').value = data?.whatsapp_number || '';
+      }
+    }
+
+    $('loginBtn').addEventListener('click', async () => {
+      const email = $('email').value.trim();
+      const password = $('password').value;
+      if (!email || !password) return status('Isi email dan password terlebih dahulu.');
+      $('loginBtn').disabled = true;
+      const { error } = await db.auth.signInWithPassword({ email, password });
+      $('loginBtn').disabled = false;
+      if (error) return status('Login gagal: ' + error.message);
+      status('Login berhasil.');
+      await showSession();
+    });
+
+    $('saveBtn').addEventListener('click', async () => {
+      const number = $('waNumber').value.replace(/\D/g, '');
+      if (!/^62\d{8,15}$/.test(number)) return status('Nomor tidak valid. Gunakan format 62xxxxxxxxxx.');
+      $('saveBtn').disabled = true;
+      const { error } = await db.from('site_settings')
+        .update({ whatsapp_number: number, updated_at: new Date().toISOString() })
+        .eq('id', 1);
+      $('saveBtn').disabled = false;
+      if (error) return status('Gagal menyimpan: ' + error.message + '. Periksa policy UPDATE dan UID admin.');
+      status('Berhasil! Nomor WhatsApp website sudah diperbarui.');
+    });
+
+    $('logoutBtn').addEventListener('click', async () => {
+      await db.auth.signOut();
+      $('waNumber').value = '';
+      status('Kamu sudah keluar.');
+      await showSession();
+    });
+    showSession();
+  </script>
+</body>
+</html>
