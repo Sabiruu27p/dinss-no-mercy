@@ -68,3 +68,25 @@ footer .footer-brand {
 .footer-brand {
   display: none !important;
 }
+
+/* FINAL FIX - SATU LOGO SAJA */
+.hero-art,
+.about-logo,
+.footer-brand {
+  display: none !important;
+}
+
+/* Rapikan layout setelah logo tambahan disembunyikan */
+.hero {
+  grid-template-columns: 1fr !important;
+}
+
+.about {
+  grid-template-columns: 1.1fr 0.9fr !important;
+}
+
+@media (max-width: 620px) {
+  .about {
+    grid-template-columns: 1fr !important;
+  }
+}
