@@ -1,34 +1,44 @@
 *{box-sizing:border-box} :root{--bg:#050a13;--panel:#0b1525;--panel2:#0e1d32;--line:#1b3554;--blue:#0799ff;--cyan:#39c5ff;--white:#f4f8ff;--muted:#a5b5c9} html{scroll-behavior:smooth} body{margin:0;background:radial-gradient(ellipse at 78% 10%,#0b2140 0,transparent 35%),var(--bg);color:var(--white);font-family:Inter,Arial,sans-serif;line-height:1.6} a{color:inherit;text-decoration:none}.section-wrap{width:min(1160px,calc(100% - 48px));margin:auto}.site-header{height:82px;display:flex;align-items:center;justify-content:space-between;padding:0 max(24px,calc((100vw - 1160px)/2));border-bottom:1px solid #18304c;background:#050a13ed;position:sticky;top:0;z-index:10;backdrop-filter:blur(16px)}.brand{display:flex;align-items:center;gap:10px;min-width:190px}.brand img{width:54px;height:48px;object-fit:cover;object-position:center;border-radius:9px}.brand span{display:grid;line-height:1}.brand b{font-size:19px;letter-spacing:1px}.brand small{color:var(--cyan);font-size:11px;font-weight:800;letter-spacing:2px;margin-top:5px}.site-header nav{display:flex;gap:30px;color:#d2deed;font-size:13px;font-weight:600}.site-header nav a:hover,.site-header nav .active{color:var(--cyan)}.header-cta,.btn{display:inline-flex;align-items:center;justify-content:center;gap:12px;border-radius:9px;font-size:13px;font-weight:700;padding:13px 18px}.header-cta,.btn-primary{background:linear-gradient(110deg,#087de8,#08b4ff);box-shadow:0 8px 28px #008cff30;color:white}.menu-toggle{display:none;background:none;border:1px solid var(--line);color:white;border-radius:8px;padding:8px 12px;font-size:20px}.hero{min-height:535px;display:grid;grid-template-columns:1.05fr .95fr;align-items:center;gap:20px;padding-top:50px;padding-bottom:50px;overflow:hidden}.eyebrow{font-size:11px;letter-spacing:2px;font-weight:800;color:var(--cyan);display:inline-flex;align-items:center;gap:9px}.eyebrow i{width:7px;height:7px;border-radius:50%;background:var(--cyan);box-shadow:0 0 12px var(--cyan)}h1{font-size:clamp(38px,5.2vw,66px);line-height:1.06;letter-spacing:-2.5px;margin:22px 0 18px;font-weight:900}h1 em,h2 em{font-style:normal;color:var(--cyan)}.hero-copy>p,.section-heading p,.about-copy p,.contact-band p{color:var(--muted);max-width:540px;font-size:15px}.hero-actions{display:flex;gap:12px;margin-top:28px;flex-wrap:wrap}.btn{padding:14px 20px}.btn-outline{border:1px solid #47749f;background:#0a1422;color:#e8f4ff}.btn:hover,.header-cta:hover{transform:translateY(-2px);filter:brightness(1.12)}.hero-note{margin-top:45px;color:#7692b2;font-size:10px;letter-spacing:2px}.pulse{display:inline-block;width:7px;height:7px;background:#16b8ff;border-radius:50%;margin-right:8px;box-shadow:0 0 12px #16b8ff}.hero-art{min-height:390px;position:relative;display:grid;place-items:center}.art-glow{position:absolute;width:75%;aspect-ratio:1;border-radius:50%;background:#006eff30;filter:blur(60px)}.hero-art img{position:relative;width:min(100%,500px);filter:drop-shadow(0 15px 35px #007bff50);mask-image:radial-gradient(ellipse,#000 56%,transparent 78%)}.art-caption{position:absolute;right:0;bottom:8px;font-size:15px;font-style:italic;line-height:1.3;color:#b7dfff;text-align:right;letter-spacing:1px}.art-caption b{color:white;font-size:21px}.section-pad{padding-top:68px;padding-bottom:68px}.services{border-top:1px solid #142943}.section-heading{display:flex;align-items:end;justify-content:space-between;margin-bottom:28px}.section-heading h2,.about-copy h2,.contact-band h2{font-size:clamp(27px,3vw,38px);line-height:1.15;margin:8px 0}.section-index{font-size:10px;color:#6685a8;letter-spacing:2px;padding-bottom:8px}.service-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}.service-card{background:linear-gradient(145deg,#10223a,#091321);border:1px solid #1b3858;border-radius:13px;padding:23px;min-height:210px;transition:.2s}.service-card:hover{border-color:#168fe8;transform:translateY(-4px)}.service-icon{font-size:30px;color:var(--cyan);text-shadow:0 0 20px #009dff70}.service-card h3{font-size:16px;margin:15px 0 5px}.service-card p{font-size:12px;color:var(--muted);min-height:42px}.text-link{font-size:12px;color:#70caff;font-weight:700}.text-link b{padding-left:8px}.about{display:grid;grid-template-columns:1fr 1.1fr .9fr;gap:35px;align-items:center;border-top:1px solid #142943;border-bottom:1px solid #142943}.about-logo{background:radial-gradient(circle,#102c50,#07101c 70%);border:1px solid #174c7d;border-radius:14px;overflow:hidden}.about-logo img{width:100%;display:block;mix-blend-mode:screen}.about-copy h2{font-size:30px}.about-copy p{font-size:13px}.about-copy .btn{margin-top:12px}.about-points{border-left:1px solid #1d5481;padding-left:28px}.about-points h3{margin:0 0 18px;font-size:19px}.about-points p{font-size:12px;color:#c7d5e7}.about-points b{color:var(--cyan);font-size:17px;margin-right:8px}.games{padding-bottom:55px}.game-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.game-tile{height:135px;border:1px solid #1b3b5d;border-radius:12px;background:linear-gradient(135deg,#102b49,#091321);display:flex;align-items:center;justify-content:center;gap:13px;flex-direction:column;transition:.2s}.game-tile:hover{border-color:var(--cyan);background:#102744}.game-symbol{font-size:27px;font-weight:900;color:#6acbff;text-shadow:0 0 18px #008cff80}.game-tile span{font-size:13px;font-weight:700}.fine-print{font-size:10px;color:#71869f;margin-top:18px}.contact-band{border:1px solid #087ec9;border-radius:15px;padding:27px 32px;margin-bottom:60px;display:flex;justify-content:space-between;align-items:center;gap:20px;background:linear-gradient(100deg,#0b2440,#091321 65%)}.contact-band h2{font-size:25px;margin:7px 0}.contact-band p{font-size:12px;margin:0}.site-footer{border-top:1px solid #18304c;padding:25px 0 35px;display:flex;align-items:center;justify-content:space-between;gap:20px}.footer-brand img{width:45px;height:40px}.site-footer>p,.back-top{font-size:11px;color:#8096b1}.back-top:hover{color:var(--cyan)}
 @media(max-width:850px){.site-header{height:70px}.site-header nav{gap:15px}.header-cta{padding:10px 12px;font-size:11px}.hero{min-height:460px}.service-grid{grid-template-columns:repeat(2,1fr)}.about{grid-template-columns:1fr 1fr}.about-points{grid-column:1/-1;border-left:0;border-top:1px solid #1d5481;padding:20px 0 0;display:grid;grid-template-columns:repeat(2,1fr)}.about-points h3{grid-column:1/-1}.game-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:620px){.section-wrap{width:min(100% - 32px,520px)}.site-header{padding:0 16px}.brand{min-width:0}.brand img{width:43px;height:40px}.brand b{font-size:16px}.brand small{font-size:9px}.menu-toggle{display:block;margin-left:auto}.site-header nav{display:none;position:absolute;top:69px;left:0;right:0;background:#081321;border-bottom:1px solid var(--line);padding:18px;flex-direction:column;gap:18px}.site-header nav.open{display:flex}.header-cta{display:none}.hero{grid-template-columns:1fr;padding-top:55px;gap:0}.hero-copy{position:relative;z-index:1}.hero-art{min-height:230px;margin-top:-10px}.hero-art img{width:min(88%,360px)}h1{font-size:42px;letter-spacing:-1.7px}.hero-copy>p{font-size:13px}.hero-note{margin-top:28px}.section-pad{padding-top:48px;padding-bottom:48px}.section-heading{align-items:start}.section-index{display:none}.service-grid{gap:10px}.service-card{padding:17px;min-height:195px}.service-card h3{font-size:14px}.service-card p{font-size:11px}.about{grid-template-columns:1fr;gap:22px}.about-logo{max-width:390px;margin:auto}.about-copy h2{font-size:28px}.about-points{grid-template-columns:1fr 1fr}.game-grid{gap:10px}.game-tile{height:115px}.contact-band{margin-bottom:40px;padding:22px;align-items:flex-start;flex-direction:column}.contact-band h2{font-size:22px}.site-footer{flex-wrap:wrap}.site-footer>p{order:3;width:100%;margin:0}.back-top{margin-left:auto}}
-
 .hero-art,
 .about-logo {
   display: none !important;
 }
-
 /* DINSS NO MERCY - FINAL LOGO FIX */
-
 /* Pertahankan logo header, sembunyikan logo tambahan */
 .hero-art,
 .about-logo,
 .footer-brand {
   display: none !important;
 }
-
 /* Rapikan layout hero dan tentang kami */
 .hero {
   grid-template-columns: 1fr !important;
 }
-
 .about {
   grid-template-columns: 1.1fr 0.9fr !important;
 }
-
 /* Tampilan HP */
 @media (max-width: 620px) {
   .about {
     grid-template-columns: 1fr !important;
   }
 }
-
+/* DINSS NO MERCY FINAL LOGO FIX */
+.hero-art,
+.about-logo,
+.footer-brand {
+  display: none !important;
+}
+.hero {
+  grid-template-columns: 1fr !important;
+}
+.about {
+  grid-template-columns: 1.1fr 0.9fr !important;
+}
+@media (max-width: 620px) {
+  .about {
+    grid-template-columns: 1fr !important;
+  }
+}
